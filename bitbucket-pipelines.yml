@@ -1,0 +1,62 @@
+image: node:20
+#Example script to achieve the same functionality as the GitHub Actions workflows for Postman, Cypress, and Selenium tests
+definitions:
+  steps:
+    - step: &postman-tests
+        name: Postman API Tests
+        condition:
+          changesets:
+            includePaths:
+              - "postman-demo/**"
+        caches:
+          - node
+        script:
+          - cd postman-demo
+          - npm install
+          - npm test
+        artifacts:
+          - postman-demo/test-results/junit-report.xml
+    
+    - step: &cypress-tests
+        name: Cypress E2E Tests
+        condition:
+          changesets:
+            includePaths:
+              - "cypress-demo/**"
+        caches:
+          - node
+        script:
+          - cd cypress-demo
+          - npm install
+          - npm test
+        artifacts:
+          - cypress-demo/test-results/*.xml
+    
+    - step: &selenium-tests
+        name: Selenium UI Tests
+        condition:
+          changesets:
+            includePaths:
+              - "selenium-demo/**"
+        caches:
+          - node
+        script:
+          - cd selenium-demo
+          - npm install
+          - npm test
+        artifacts:
+          - selenium-demo/test-results/*.xml
+
+pipelines:
+  default:
+    - parallel:
+        - step: *postman-tests
+        - step: *cypress-tests
+        - step: *selenium-tests
+  
+  branches:
+    main:
+      - parallel:
+          - step: *postman-tests
+          - step: *cypress-tests
+          - step: *selenium-tests

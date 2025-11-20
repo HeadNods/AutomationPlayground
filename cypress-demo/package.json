@@ -1,0 +1,21 @@
+{
+  "name": "cypress-demo",
+  "version": "1.0.0",
+  "description": "Cypress E2E tests with Page Object Model",
+  "scripts": {
+    "test": "cypress run",
+    "test:headed": "cypress run --headed",
+    "test:headless": "cypress run --headless",
+    "test:chrome": "cypress run --browser chrome",
+    "open": "cypress open"
+  },
+  "keywords": [
+    "cypress",
+    "e2e",
+    "testing"
+  ],
+  "devDependencies": {
+    "cypress": "^15.6.0",
+    "cypress-mochawesome-reporter": "^3.8.2"
+  }
+}

@@ -1,0 +1,75 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'cypress-demo/**'
+      - '.github/workflows/cypress-workflow.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'cypress-demo/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: cypress-demo/package.json
+      
+      - name: Install dependencies
+        working-directory: cypress-demo
+        run: npm install
+      
+      - name: Run Cypress tests
+        working-directory: cypress-demo
+        run: npm test
+      
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress-demo/cypress/screenshots
+          retention-days: 3
+          if-no-files-found: ignore
+      
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress-demo/cypress/videos
+          retention-days: 3
+          if-no-files-found: ignore
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-test-results
+          path: cypress-demo/cypress/reports/*.html
+          retention-days: 5
+          if-no-files-found: ignore
+      
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: cypress-demo/cypress/reports/*.html
+          check_name: Cypress E2E Test Results
