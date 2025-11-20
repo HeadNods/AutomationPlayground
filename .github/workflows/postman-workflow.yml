@@ -3,8 +3,9 @@ name: Postman API Tests
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  paths:
+    - 'postman-demo/**'
+    - '.github/workflows/postman-tests.yml'
   workflow_dispatch:
 
 jobs:
