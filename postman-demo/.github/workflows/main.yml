@@ -1,0 +1,46 @@
+name: Postman API Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  postman-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: postman-demo/package.json
+      
+      - name: Install dependencies
+        working-directory: postman-demo
+        run: npm ci
+      
+      - name: Run Postman tests
+        working-directory: postman-demo
+        run: npm test
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-test-results
+          path: postman-demo/test-results/junit-report.xml
+          retention-days: 5
+      
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: postman-demo/test-results/junit-report.xml
+          check_name: Postman API Test Results
