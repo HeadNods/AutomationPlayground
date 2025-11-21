@@ -59,48 +59,39 @@ npm run open
 
 ### Docker Execution
 
-Docker execution uses the official `cypress/included:latest` image with Cypress pre-installed.
+Docker execution uses the official `cypress/included:latest` image with Cypress pre-installed. Tests are run using Docker Compose for better configuration management and CI/CD compatibility.
 
 #### Default Tests (Electron)
 ```bash
-npm run docker:test
+npm run docker:compose:up
 ```
 
 #### Browser-Specific Tests
 ```bash
 # Chrome
-npm run docker:test:chrome
+npm run docker:compose:chrome
 
 # Firefox
-npm run docker:test:firefox
+npm run docker:compose:firefox
 
 # Edge
-npm run docker:test:edge
-```
-
-#### Headed Mode (requires X11/display forwarding)
-```bash
-npm run docker:test:headed
-```
-
-#### Docker Compose
-```bash
-# Run with default browser
-npm run docker:compose:up
-
-# Run with specific browser
-npm run docker:compose:chrome
-npm run docker:compose:firefox
 npm run docker:compose:edge
+```
 
-# Stop containers
+#### Stop and Clean Up Containers
+```bash
 npm run docker:compose:down
 ```
 
 #### Interactive Shell (Debugging)
+
+For debugging or exploring the container environment:
+
 ```bash
 npm run docker:interactive
 ```
+
+This opens an interactive bash shell in the Cypress container where you can manually run commands.
 
 ## GitHub Actions CI/CD
 
@@ -147,10 +138,11 @@ You can manually trigger the workflow via the GitHub Actions UI with custom opti
 
 #### Docker Execution
 1. Skips Node.js setup
-2. Uses `cypress/included:latest` Docker image
+2. Uses `cypress/included:latest` Docker image via Docker Compose
 3. Runs tests based on browser selection:
-   - If browser is `chrome`, `firefox`, or `edge`: runs `npm run docker:test:<browser>`
-   - Otherwise: runs `npm run docker:test`
+   - If browser is `chrome`, `firefox`, or `edge`: runs `npm run docker:compose:<browser>`
+   - Otherwise: runs `npm run docker:compose:up`
+4. Automatically cleans up containers after test completion
 
 ### Artifacts
 
@@ -225,11 +217,12 @@ The main configuration is in `cypress.config.js`. Key settings include:
 
 ### Docker Configuration
 
-Docker settings are defined in:
-- **Direct Docker commands**: In `package.json` scripts
-- **Docker Compose**: In `docker-compose.yml`
+Docker settings are defined in `docker-compose.yml`, which configures:
+- Service definitions for different browsers (Electron, Chrome, Firefox, Edge)
+- Volume mounting: Current directory (`.`) is mounted to `/app` in the container
+- Working directory and entrypoint configuration
 
-Volume mounting: Current directory (`.`) is mounted to `/app` in the container.
+This approach provides easy maintainability and avoids TTY issues in CI/CD environments.
 
 ## Test Reports
 

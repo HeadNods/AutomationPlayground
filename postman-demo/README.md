@@ -149,3 +149,6 @@ npm install -D newman-reporter-htmlextra
 - [Newman Documentation](https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/)
 - [Restful Booker API Docs](https://restful-booker.herokuapp.com/apidoc/index.html)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+## License
+This is a demo project for learning and testing purposes.
