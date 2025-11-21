@@ -11,6 +11,22 @@ on:
     paths:
       - 'cypress-demo/**'
   workflow_dispatch:
+    inputs:
+      use_docker:
+        description: 'Run tests in Docker container'
+        required: false
+        type: boolean
+        default: false
+      browser:
+        description: 'Browser to use (chrome/firefox/edge/electron)'
+        required: false
+        type: choice
+        options:
+          - electron
+          - chrome
+          - firefox
+          - edge
+        default: electron
 
 permissions:
   contents: read
@@ -25,20 +41,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      - name: Setup Node.js (non-Docker)
+        if: ${{ !inputs.use_docker }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: cypress-demo/package.json
       
-      - name: Install dependencies
+      - name: Install dependencies (non-Docker)
+        if: ${{ !inputs.use_docker }}
         working-directory: cypress-demo
         run: npm install
       
-      - name: Run Cypress tests
+      - name: Run Cypress tests (non-Docker)
+        if: ${{ !inputs.use_docker }}
         working-directory: cypress-demo
-        run: npm test
+        run: |
+          if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
+            npm run test:${{ inputs.browser }}
+          else
+            npm test
+          fi
+      
+      - name: Run Cypress tests (Docker)
+        if: ${{ inputs.use_docker }}
+        working-directory: cypress-demo
+        run: |
+          if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
+            npm run docker:test:${{ inputs.browser }}
+          else
+            npm run docker:test
+          fi
+        env:
+          CYPRESS_INSTALL_BINARY: 0
       
       - name: Upload Cypress screenshots
         uses: actions/upload-artifact@v4

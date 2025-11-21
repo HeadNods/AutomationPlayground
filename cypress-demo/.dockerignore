@@ -1,0 +1,30 @@
+# Node modules
+node_modules
+npm-debug.log*
+
+# Cypress artifacts that will be generated in the container
+cypress/videos
+cypress/screenshots
+cypress/reports
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker files
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
