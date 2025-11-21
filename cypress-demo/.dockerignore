@@ -1,3 +1,5 @@
+#  Not used in current setup as we use premade Docker images, 
+#  but here is an example .dockerignore file for incase you build your own Docker images.
 # Node modules
 node_modules
 npm-debug.log*

@@ -1,0 +1,50 @@
+{
+  "name": "selenium-demo-personal",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build-local": "tsc -p tsconfig.node.json",
+    "prefeature-test": "npm run build-local",
+    "cucumber": "node_modules\\.bin\\cucumber-js -f @cucumber/pretty-formatter --publish-quiet",
+    "test": "npm run cucumber",
+    "docker:up": "docker compose up -d",
+    "docker:up:chrome": "docker compose up -d selenium-hub chrome",
+    "docker:up:firefox": "docker compose up -d selenium-hub firefox",
+    "docker:up:edge": "docker compose up -d selenium-hub edge",
+    "docker:up:chrome-for-testing": "docker compose up -d selenium-hub chrome-for-testing",
+    "docker:down": "docker compose down -v",
+    "test:chrome": "cross-env BROWSER=chrome npm test",
+    "test:firefox": "cross-env BROWSER=firefox npm test",
+    "test:edge": "cross-env BROWSER=edge npm test",
+    "test:chrome-for-testing": "cross-env BROWSER=chrome-for-testing npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeadNods/todo"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/messages": "^27.2.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.15.29",
+    "@types/selenium-webdriver": "^4.1.28",
+    "chromedriver": "^137.0.1",
+    "cross-env": "^10.1.0",
+    "geckodriver": "^5.0.0",
+    "selenium-webdriver": "^4.33.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@cucumber/cucumber": ">=11.0.0",
+    "selenium-webdriver": ">=4.0.0"
+  },
+  "dependencies": {
+    "debug": "^4.4.1",
+    "dotenv": "^17.2.3",
+    "html-dnd": "^1.2.1"
+  }
+}
