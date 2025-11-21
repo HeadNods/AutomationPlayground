@@ -10,11 +10,11 @@
     "test:firefox": "cypress run --browser firefox",
     "test:edge": "cypress run --browser edge",
     "open": "cypress open",
-    "docker:compose:up": "docker-compose up cypress",
-    "docker:compose:chrome": "docker-compose up cypress-chrome",
-    "docker:compose:firefox": "docker-compose up cypress-firefox",
-    "docker:compose:edge": "docker-compose up cypress-edge",
-    "docker:compose:down": "docker-compose down",
+    "docker:compose:up": "docker compose up cypress",
+    "docker:compose:chrome": "docker compose up cypress-chrome",
+    "docker:compose:firefox": "docker compose up cypress-firefox",
+    "docker:compose:edge": "docker compose up cypress-edge",
+    "docker:compose:down": "docker compose down",
     "docker:interactive": "docker run -it --rm -v .:/app -w /app --entrypoint bash cypress/included:latest"
   },
   "keywords": [
