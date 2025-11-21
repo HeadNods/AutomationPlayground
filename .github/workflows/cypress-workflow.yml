@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Setup Node.js (non-Docker)
-        if: !inputs.use_docker
+        if: ${{ !inputs.use_docker }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -50,12 +50,12 @@ jobs:
           cache-dependency-path: cypress-demo/package.json
       
       - name: Install dependencies (non-Docker)
-        if: !inputs.use_docker
+        if: ${{ !inputs.use_docker }}
         working-directory: cypress-demo
         run: npm install
       
       - name: Run Cypress tests (non-Docker)
-        if: !inputs.use_docker
+        if: ${{ !inputs.use_docker }}
         working-directory: cypress-demo
         run: |
           if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
@@ -65,7 +65,7 @@ jobs:
           fi
       
       - name: Run Cypress tests (Docker)
-        if: inputs.use_docker
+        if: ${{ inputs.use_docker }}
         working-directory: cypress-demo
         run: |
           if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
@@ -77,7 +77,7 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
 
       - name: Cleanup containers (Docker)
-        if: inputs.use_docker && always()
+        if: ${{ inputs.use_docker && always() }}
         working-directory: cypress-demo
         run: npm run docker:compose:down
       
