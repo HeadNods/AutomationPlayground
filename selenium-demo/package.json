@@ -5,7 +5,7 @@
   "scripts": {
     "build-local": "tsc -p tsconfig.node.json",
     "prefeature-test": "npm run build-local",
-    "cucumber": "node_modules\\.bin\\cucumber-js -f @cucumber/pretty-formatter --publish-quiet",
+    "cucumber": "cucumber-js -f @cucumber/pretty-formatter --publish-quiet",
     "test": "npm run cucumber",
     "docker:up": "docker compose up -d",
     "docker:up:chrome": "docker compose up -d selenium-hub chrome",
