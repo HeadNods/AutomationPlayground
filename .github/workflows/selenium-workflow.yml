@@ -64,6 +64,9 @@ jobs:
       - name: Run Selenium tests with ${{ matrix.browser }}
         working-directory: selenium-demo
         run: npm run test:${{ matrix.browser }}
+        env:
+          SELENIUM_GRID: ${{ secrets.SELENIUM_GRID || 'http://localhost:4444/wd/hub' }}
+          BROWSER: ${{ matrix.browser }}
       
       - name: Stop Selenium Grid
         if: always()
