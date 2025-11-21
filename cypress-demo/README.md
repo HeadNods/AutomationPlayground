@@ -19,9 +19,6 @@ cd cypress-demo
 # Install dependencies
 npm install
 
-# Run tests (headless mode with Electron)
-npm test
-
 # Open Cypress Test Runner (interactive mode)
 npm run open
 ```
@@ -137,12 +134,13 @@ You can manually trigger the workflow via the GitHub Actions UI with custom opti
    - Otherwise (electron or undefined): runs `npm test`
 
 #### Docker Execution
-1. Skips Node.js setup
-2. Uses `cypress/included:latest` Docker image via Docker Compose
-3. Runs tests based on browser selection:
+1. Sets up Node.js 20.x
+2. Installs dependencies from `cypress-demo/package.json`
+3. Uses `cypress/included:latest` Docker image via Docker Compose
+4. Runs tests based on browser selection:
    - If browser is `chrome`, `firefox`, or `edge`: runs `npm run docker:compose:<browser>`
    - Otherwise: runs `npm run docker:compose:up`
-4. Automatically cleans up containers after test completion
+5. Automatically cleans up containers after test completion
 
 ### Artifacts
 
