@@ -45,6 +45,5 @@ const initializePage = async function (this: World, pageName: string) {
   }
 };
 
-Given(/^I (?:should be|am) on the (.*?) (?:page|component)$/, initializePage);
-When(/^I (?:should be|am) on the (.*?) (?:page|component)$/, initializePage);
+When(/^I am on the (.*?) (?:page|component)$/, initializePage);
 Then(/^I should be on the (.*?) (?:page|component)$/, initializePage);
