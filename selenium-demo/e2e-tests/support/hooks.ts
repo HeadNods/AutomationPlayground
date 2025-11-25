@@ -22,13 +22,7 @@ After(async function (this: World, { result }) {
       }
     }
   } finally {
-    // Always try to quit the driver if it exists
-    if (this.driver) {
-      try {
-        await this.driver.quit();
-      } catch (quitError) {
-        console.error("Failed to quit driver:", quitError);
-      }
-    }
+    // Use the cleanup method which handles driver state tracking
+    await this.cleanup();
   }
 });

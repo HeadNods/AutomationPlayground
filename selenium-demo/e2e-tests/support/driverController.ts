@@ -7,6 +7,17 @@ import chrome from "selenium-webdriver/chrome";
 import firefox from "selenium-webdriver/firefox";
 import edge from "selenium-webdriver/edge";
 
+// Use type imports to avoid loading page classes at runtime
+import type { HomePage } from "../pages/homePage";
+import type { AddRemoveElementsPage } from "../pages/addRemoveElementsPage";
+import type { CheckboxesPage } from "../pages/checkboxesPage";
+import type { ContextMenuPage } from "../pages/contextMenuPage";
+import type { DragAndDropPage } from "../pages/dragAndDropPage";
+import type { DynamicControlsPage } from "../pages/dynamicControlsPage";
+import type { InputsPage } from "../pages/inputsPage";
+import type { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
+import type { LoginPage } from "../pages/loginPage";
+
 interface BrowserConfig {
     browser: string;
     options: chrome.Options | firefox.Options | edge.Options;
@@ -49,6 +60,18 @@ export class World extends CucumberWorld {
     debugLog: string = "";
     parameters: any;
     public driver!: WebDriver;
+    private driverInitialized: boolean = false;
+    
+    // Page Object instances - initialized on-demand in step definitions
+    homePage: HomePage;
+    addRemoveElementsPage: AddRemoveElementsPage;
+    checkboxesPage: CheckboxesPage;
+    contextMenuPage: ContextMenuPage;
+    dragAndDropPage: DragAndDropPage;
+    dynamicControlsPage: DynamicControlsPage;
+    inputsPage: InputsPage;
+    javascriptAlertsComponent: JavascriptAlertsComponent;
+    loginPage: LoginPage;
 
     constructor(options: any) {
         super(options);
@@ -66,23 +89,45 @@ export class World extends CucumberWorld {
         console.log(`Connecting to Selenium Grid at: ${seleniumGrid}`);
         console.log(`Using browser: ${browser}`);
         
-        const builder = new Builder()
-            .forBrowser(browserName)
-            .usingServer(seleniumGrid);
+        try {
+            const builder = new Builder()
+                .forBrowser(browserName)
+                .usingServer(seleniumGrid);
 
-        // Set browser-specific options
-        if (options instanceof chrome.Options) {
-            builder.setChromeOptions(options);
-        } else if (options instanceof firefox.Options) {
-            builder.setFirefoxOptions(options);
-        } else if (options instanceof edge.Options) {
-            builder.setEdgeOptions(options);
+            // Set browser-specific options
+            if (options instanceof chrome.Options) {
+                builder.setChromeOptions(options);
+            } else if (options instanceof firefox.Options) {
+                builder.setFirefoxOptions(options);
+            } else if (options instanceof edge.Options) {
+                builder.setEdgeOptions(options);
+            }
+
+            this.driver = await builder.build();
+            this.driverInitialized = true;
+            console.log("Driver initialized successfully");
+        } catch (error) {
+            console.error("Failed to initialize WebDriver:", error);
+            throw error;
         }
+    }
 
-        this.driver = await builder.build();
-        console.log("Driver initialized successfully");
+    async cleanup(): Promise<void> {
+        if (this.driverInitialized && this.driver) {
+            try {
+                await this.driver.quit();
+                console.log("Driver cleanup completed");
+            } catch (error) {
+                console.error("Error during driver cleanup:", error);
+            } finally {
+                this.driverInitialized = false;
+            }
+        }
     }
 }
 
 setWorldConstructor(World);
+
+// Set default timeout to 15 minutes for long-running scenarios
+// (e.g., waiting for elements, network requests, browser startup)
 setDefaultTimeout(15 * 60 * 1000);
