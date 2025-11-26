@@ -1,6 +1,6 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { World } from "../support/driverController";
-import { DragAndDropPage } from "../pages/dragAndDropPage";
+import { DragAndDropPage } from "../pages/pageObjects/dragAndDropPage";
 import assert from "assert";
 
 // Navigation

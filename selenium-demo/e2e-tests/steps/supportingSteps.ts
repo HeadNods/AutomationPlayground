@@ -1,12 +1,12 @@
 import { Given, Then, When } from "@cucumber/cucumber";
-import { AddRemoveElementsPage } from "../pages/addRemoveElementsPage";
-import { CheckboxesPage } from "../pages/checkboxesPage";
-import { ContextMenuPage } from "../pages/contextMenuPage";
-import { DragAndDropPage } from "../pages/dragAndDropPage";
-import { DynamicControlsPage } from "../pages/dynamicControlsPage";
-import { HomePage } from "../pages/homePage";
-import { InputsPage } from "../pages/inputsPage";
-import { LoginPage } from "../pages/loginPage";
+import { AddRemoveElementsPage } from "../pages/pageObjects/addRemoveElementsPage";
+import { CheckboxesPage } from "../pages/pageObjects/checkboxesPage";
+import { ContextMenuPage } from "../pages/pageObjects/contextMenuPage";
+import { DragAndDropPage } from "../pages/pageObjects/dragAndDropPage";
+import { DynamicControlsPage } from "../pages/pageObjects/dynamicControlsPage";
+import { HomePage } from "../pages/pageObjects/homePage";
+import { InputsPage } from "../pages/pageObjects/inputsPage";
+import { LoginPage } from "../pages/pageObjects/loginPage";
 import { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
 import { World } from "../support/driverController";
 

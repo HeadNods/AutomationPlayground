@@ -73,7 +73,7 @@ class SpiesStubsClocksPage extends BasePage {
   createStubWithReturn(object, methodName, returnValue, alias = null) {
     const stub = cy.stub(object, methodName).returns(returnValue);
     if (alias) {
-      stub.as(alias);
+      cy.wrap(stub).as(alias);
     }
     return stub;
   }
@@ -81,7 +81,7 @@ class SpiesStubsClocksPage extends BasePage {
   createStubWithThrow(object, methodName, error, alias = null) {
     const stub = cy.stub(object, methodName).throws(error);
     if (alias) {
-      stub.as(alias);
+      cy.wrap(stub).as(alias);
     }
     return stub;
   }

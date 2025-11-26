@@ -8,15 +8,15 @@ import firefox from "selenium-webdriver/firefox";
 import edge from "selenium-webdriver/edge";
 
 // Use type imports to avoid loading page classes at runtime
-import type { HomePage } from "../pages/homePage";
-import type { AddRemoveElementsPage } from "../pages/addRemoveElementsPage";
-import type { CheckboxesPage } from "../pages/checkboxesPage";
-import type { ContextMenuPage } from "../pages/contextMenuPage";
-import type { DragAndDropPage } from "../pages/dragAndDropPage";
-import type { DynamicControlsPage } from "../pages/dynamicControlsPage";
-import type { InputsPage } from "../pages/inputsPage";
+import type { HomePage } from "../pages/pageObjects/homePage";
+import type { AddRemoveElementsPage } from "../pages/pageObjects/addRemoveElementsPage";
+import type { CheckboxesPage } from "../pages/pageObjects/checkboxesPage";
+import type { ContextMenuPage } from "../pages/pageObjects/contextMenuPage";
+import type { DragAndDropPage } from "../pages/pageObjects/dragAndDropPage";
+import type { DynamicControlsPage } from "../pages/pageObjects/dynamicControlsPage";
+import type { InputsPage } from "../pages/pageObjects/inputsPage";
 import type { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
-import type { LoginPage } from "../pages/loginPage";
+import type { LoginPage } from "../pages/pageObjects/loginPage";
 
 interface BrowserConfig {
     browser: string;

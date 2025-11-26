@@ -1,6 +1,6 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { World } from "../support/driverController";
-import { InputsPage } from "../pages/inputsPage";
+import { InputsPage } from "../pages/pageObjects/inputsPage";
 import assert from "assert";
 
 // Navigation

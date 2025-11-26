@@ -68,7 +68,7 @@ class MiscPage extends BasePage {
   }
 
   configureScreenshotDefaults(options = {}) {
-    const defaultOptions = {
+    Cypress.Screenshot.defaults({
       blackout: ['.foo'],
       capture: 'viewport',
       clip: { x: 0, y: 0, width: 200, height: 200 },
@@ -78,9 +78,7 @@ class MiscPage extends BasePage {
       onBeforeScreenshot() { },
       onAfterScreenshot() { },
       ...options
-    };
-
-    Cypress.Screenshot.defaults(defaultOptions);
+    });
     return this;
   }
 

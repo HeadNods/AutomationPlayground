@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "types": ["cypress"],
+    "resolveJsonModule": true,
+    "lib": ["ES2015", "DOM"]
+  },
+  "include": ["cypress/**/*"]
+}

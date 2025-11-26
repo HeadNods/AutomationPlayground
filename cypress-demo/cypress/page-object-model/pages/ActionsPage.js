@@ -140,7 +140,11 @@ class ActionsPage extends BasePage {
     this.clickElement(this.selectors.actionButton);
     return this;
   }
-
+  
+/**
+  * Click on the canvas
+  * @param {'center' | 'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight' | 'left' | 'right'} position - Position to click
+  */
   clickCanvas(position = 'center') {
     this.getElement(this.selectors.actionCanvas).click(position);
     return this;

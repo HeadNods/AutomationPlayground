@@ -1,6 +1,6 @@
 import { Given, When } from "@cucumber/cucumber";
 import { World } from "../support/driverController";
-import { ContextMenuPage } from "../pages/contextMenuPage";
+import { ContextMenuPage } from "../pages/pageObjects/contextMenuPage";
 
 // Navigation
 Given(
