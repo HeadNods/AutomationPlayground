@@ -79,7 +79,7 @@ export class BasePage {
         locator: By,
         attribute: string,
     ): Promise<string> {
-        const element = await this.driver.findElement(locator);
+        const element = await this.getElement(locator);
         const attributeValue = await element.getAttribute(attribute);
         this.debugLog(
             this.world,
@@ -97,7 +97,7 @@ export class BasePage {
     protected async getElementText(locator: By): Promise<string> {
         await this.waitForElementToBeLocated(locator, 4);
         this.debugLog(this.world, `getting text of ${locator}`);
-        return await this.driver.findElement(locator).getText();
+        return await (await this.getElement(locator)).getText();
     }
 
     /**
@@ -262,7 +262,7 @@ export class BasePage {
         await this.waitForElementToBeClickable(locator, waitSecondsNum);
 
         try {
-            await this.driver.findElement(locator).click();
+            await (await this.getElement(locator)).click();
         } catch (error) {
             error.message = error.message + ` could not click on ${locator}`;
             throw error;
@@ -317,7 +317,7 @@ export class BasePage {
             );
 
             this.debugLog(this.world, `doubleClicking on ${locator}`);
-            const doubleClickElement = await this.driver.findElement(locator);
+            const doubleClickElement = await this.getElement(locator);
             await this.driver.actions().doubleClick(doubleClickElement).perform();
         } catch (error) {
             error.message = error.message + ` could not doubleClick on ${locator}`;
@@ -344,7 +344,7 @@ export class BasePage {
             );
 
             this.debugLog(this.world, `rightClicking on ${locator}`);
-            const rightClickElement = await this.driver.findElement(locator);
+            const rightClickElement = await this.getElement(locator);
             await this.driver.actions().contextClick(rightClickElement).perform();
         } catch (error) {
             error.message = error.message + ` could not rightClick on ${locator}`;
@@ -371,7 +371,7 @@ export class BasePage {
             );
 
             this.debugLog(this.world, `clicking forcefully on ${locator}`);
-            const forceClickElement = await this.driver.findElement(locator);
+            const forceClickElement = await this.getElement(locator);
             await this.driver.executeScript(
                 "arguments[0].click();",
                 forceClickElement,
@@ -406,7 +406,7 @@ export class BasePage {
             );
 
             this.debugLog(this.world, `submitting ${locator}`);
-            await this.driver.findElement(locator).submit();
+            await (await this.getElement(locator)).submit();
         } catch (error) {
             error.message = error.message + ` could not submit ${locator}`;
             throw error;
@@ -452,17 +452,17 @@ export class BasePage {
      */
     protected async clearText(locator: By): Promise<void> {
         this.debugLog(this.world, `clearing text from ${locator}`);
-        await this.driver.findElement(locator).clear();
+        await (await this.getElement(locator)).clear();
 
         // clear() doesn't work in all browsers
         // Check if we're on a mac
         if (process.platform === "darwin") {
-            await this.driver.findElement(locator).sendKeys(Key.COMMAND + "a");
+            await (await this.getElement(locator)).sendKeys(Key.COMMAND + "a");
         } else {
-            await this.driver.findElement(locator).sendKeys(Key.CONTROL + "a");
+            await (await this.getElement(locator)).sendKeys(Key.CONTROL + "a");
         }
 
-        await this.driver.findElement(locator).sendKeys(Key.DELETE);
+        await (await this.getElement(locator)).sendKeys(Key.DELETE);
     }
 
     /**
@@ -479,7 +479,7 @@ export class BasePage {
             this.world,
             `selecting option ${optionLocator} from dropdown ${locator}`,
         );
-        const dropdown = await this.driver.findElement(locator);
+        const dropdown = await this.getElement(locator);
         await dropdown.click();
         const chosenOption = await dropdown.findElement(optionLocator);
         await chosenOption.click();
@@ -494,7 +494,7 @@ export class BasePage {
         locator: By,
     ): Promise<string> {
         this.debugLog(this.world, `selecting all options from dropdown ${locator}`);
-        const dropdown = await this.driver.findElement(locator);
+        const dropdown = await this.getElement(locator);
         dropdown.findElements(By.tagName("option")).then(async (options) => {
             for (const option of options) {
                 const isSelected = await option.isSelected();
@@ -519,7 +519,7 @@ export class BasePage {
             this.world,
             `unselecting all options from dropdown ${locator}`,
         );
-        const dropdown = await this.driver.findElement(locator);
+        const dropdown = await this.getElement(locator);
         dropdown.findElements(By.tagName("option")).then(async (options) => {
             for (const option of options) {
                 const isSelected = await option.isSelected();
@@ -539,7 +539,7 @@ export class BasePage {
      */
     protected async checkCheckbox(locator: By): Promise<string> {
         this.debugLog(this.world, `checking checkbox ${locator}`);
-        const checkbox = await this.driver.findElement(locator);
+        const checkbox = await this.getElement(locator);
         if (!(await checkbox.isSelected())) {
             await checkbox.click();
         }
@@ -553,7 +553,7 @@ export class BasePage {
      */
     protected async uncheckCheckbox(locator: By): Promise<string> {
         this.debugLog(this.world, `unchecking checkbox ${locator}`);
-        const checkbox = await this.driver.findElement(locator);
+        const checkbox = await this.getElement(locator);
         if (await checkbox.isSelected()) {
             await checkbox.click();
         }
@@ -567,7 +567,7 @@ export class BasePage {
      */
     protected async selectRadioButton(locator: By): Promise<string> {
         this.debugLog(this.world, `select Radio button ${locator}`);
-        const radioButton = await this.driver.findElement(locator);
+        const radioButton = await this.getElement(locator);
         if (!(await radioButton.isSelected())) {
             await radioButton.click();
         }
@@ -581,7 +581,7 @@ export class BasePage {
      */
     protected async unselectRadioButton(locator: By): Promise<string> {
         this.debugLog(this.world, `unselect Radio button ${locator}`);
-        const radioButton = await this.driver.findElement(locator);
+        const radioButton = await this.getElement(locator);
         if (await radioButton.isSelected()) {
             await radioButton.click();
         }
@@ -602,7 +602,7 @@ export class BasePage {
             this.world,
             `select Radio button ${locator} option ${option}`,
         );
-        const radioButtonGroup = await this.driver.findElement(locator);
+        const radioButtonGroup = await this.getElement(locator);
         radioButtonGroup.findElements(By.tagName("input")).then(async (options) => {
             for (const opt of options) {
                 const value = await opt.getAttribute("value");
@@ -623,7 +623,7 @@ export class BasePage {
         try {
             await this.waitForElementToBeLocated(locator, 6);
             this.debugLog(this.world, `sending backspace to ${locator}`);
-            await this.driver.findElement(locator).sendKeys(Key.BACK_SPACE);
+            await (await this.getElement(locator)).sendKeys(Key.BACK_SPACE);
         } catch (error) {
             error.message = error.message + ` could not send backspace to ${locator}`;
             throw error;
@@ -639,7 +639,7 @@ export class BasePage {
         try {
             await this.waitForElementToBeLocated(locator, 6);
             this.debugLog(this.world, `sending enter to ${locator}`);
-            await this.driver.findElement(locator).sendKeys(Key.ENTER);
+            await (await this.getElement(locator)).sendKeys(Key.ENTER);
         } catch (error) {
             error.message = error.message + ` could not send enter to ${locator}`;
             throw error;
@@ -741,7 +741,7 @@ export class BasePage {
         try {
             await this.waitForElementToBeLocated(locator, 6);
             this.debugLog(this.world, `hovering over ${locator}`);
-            const element = await this.driver.findElement(locator);
+            const element = await this.getElement(locator);
             await this.driver.actions().move({ origin: element }).perform();
         } catch (error) {
             error.message = error.message + ` Failed to hover over element ${locator}`;
@@ -770,29 +770,74 @@ export class BasePage {
         await this.driver.manage().window().maximize();
     }
 
-    /**
-     * Performs drag and drop between two elements
-     * @param sourceLocator - By locator of the element to drag
-     * @param targetLocator - By locator of the drop target element
-     * @returns Promise<void>
-     */
-    protected async dragAndDrop(
-        sourceLocator: By,
-        targetLocator: By,
-    ): Promise<void> {
-        this.debugLog(
-            this.world,
-            `dragging ${sourceLocator} to ${targetLocator}`,
-        );
+  /**
+   * Performs drag and drop between two elements (Firefox-compatible)
+   * @param sourceLocator - By locator of the element to drag
+   * @param targetLocator - By locator of the drop target element
+   * @returns Promise<void>
+   */
+  protected async dragAndDrop(
+    sourceLocator: By,
+    targetLocator: By,
+  ): Promise<void> {
+    this.debugLog(
+      this.world,
+      `dragging ${sourceLocator} to ${targetLocator}`,
+    );
 
-        const sourceElement = await this.driver.findElement(sourceLocator);
-        const targetElement = await this.driver.findElement(targetLocator);
+    const sourceElement = await this.getElement(sourceLocator);
+    const targetElement = await this.getElement(targetLocator);
 
-        const actions = this.driver.actions({ bridge: true });
-        await actions.dragAndDrop(sourceElement, targetElement).perform();
-    }
+    // Use JavaScript-based drag and drop for Firefox compatibility
+    const script = `
+      function simulateDragDrop(sourceNode, destinationNode) {
+        var EVENT_TYPES = {
+          DRAG_END: 'dragend',
+          DRAG_START: 'dragstart',
+          DROP: 'drop'
+        }
 
+        function createCustomEvent(type) {
+          var event = new CustomEvent('CustomEvent')
+          event.initCustomEvent(type, true, true, null)
+          event.dataTransfer = {
+            data: {},
+            setData: function(type, val) {
+              this.data[type] = val
+            },
+            getData: function(type) {
+              return this.data[type]
+            }
+          }
+          return event
+        }
 
+        function dispatchEvent(node, type, event) {
+          if (node.dispatchEvent) {
+            return node.dispatchEvent(event)
+          }
+          if (node.fireEvent) {
+            return node.fireEvent('on' + type, event)
+          }
+        }
+
+        var event = createCustomEvent(EVENT_TYPES.DRAG_START)
+        dispatchEvent(sourceNode, EVENT_TYPES.DRAG_START, event)
+
+        var dropEvent = createCustomEvent(EVENT_TYPES.DROP)
+        dropEvent.dataTransfer = event.dataTransfer
+        dispatchEvent(destinationNode, EVENT_TYPES.DROP, dropEvent)
+
+        var dragEndEvent = createCustomEvent(EVENT_TYPES.DRAG_END)
+        dragEndEvent.dataTransfer = event.dataTransfer
+        dispatchEvent(sourceNode, EVENT_TYPES.DRAG_END, dragEndEvent)
+      }
+
+      simulateDragDrop(arguments[0], arguments[1]);
+    `;
+
+    await this.driver.executeScript(script, sourceElement, targetElement);
+  }
     /**
      * Description: checks the element displayed status and returns true/false.  Throws an
      * error if it finds more than one of the same element.
