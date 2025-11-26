@@ -1,15 +1,15 @@
-import { By, WebDriver } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class DragAndDropPage {
-  private driver: WebDriver;
+export class DragAndDropPage extends BasePage {
 
   // Locators
   private readonly columnA = By.id("column-a");
   private readonly columnB = By.id("column-b");
 
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world)
   }
 
   // Page URL
@@ -21,37 +21,35 @@ export class DragAndDropPage {
   }
 
   async dragColumnAToColumnB(): Promise<void> {
-    const sourceElement = await this.driver.findElement(this.columnA);
-    const targetElement = await this.driver.findElement(this.columnB);
-    const actions = this.driver.actions({ async: true });
-    await actions.dragAndDrop(sourceElement, targetElement).perform();
+    //const sourceElement = await this.getElement(this.columnA);
+    //const targetElement = await this.getElement(this.columnB);
+    await this.dragAndDrop(this.columnA, this.columnB);
+    //const actions = this.driver.actions({ async: true });
+    //await actions.dragAndDrop(sourceElement, targetElement).perform();
   }
 
   async dragColumnBToColumnA(): Promise<void> {
-    const sourceElement = await this.driver.findElement(this.columnB);
-    const targetElement = await this.driver.findElement(this.columnA);
-    const actions = this.driver.actions({ async: true });
-    await actions.dragAndDrop(sourceElement, targetElement).perform();
+    //const sourceElement = await this.getElement(this.columnB);
+    //const targetElement = await this.getElement(this.columnA);
+    //const actions = this.driver.actions({ async: true });
+    //await actions.dragAndDrop(sourceElement, targetElement).perform();
+    await this.dragAndDrop(this.columnB, this.columnA);
   }
 
   // Assertions
   async getColumnAText(): Promise<string> {
-    const element = await this.driver.findElement(this.columnA);
-    return await element.getText();
+    return await this.getElementText(this.columnA);
   }
 
   async getColumnBText(): Promise<string> {
-    const element = await this.driver.findElement(this.columnB);
-    return await element.getText();
+    return await this.getElementText(this.columnB);
   }
 
   async isColumnAPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.columnA);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.columnA);
   }
 
   async isColumnBPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.columnB);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.columnB);
   }
 }

@@ -1,9 +1,8 @@
-import { By, WebDriver } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class LoginPage {
-  private driver: WebDriver;
-
+export class LoginPage extends BasePage {
   // Locators
   private readonly usernameInput = By.id("username");
   private readonly passwordInput = By.id("password");
@@ -14,7 +13,7 @@ export class LoginPage {
   private readonly loginHeader = By.xpath("//h2");
 
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world);
   }
 
   // Page URL
@@ -27,20 +26,17 @@ export class LoginPage {
   }
 
   async enterUsername(username: string): Promise<void> {
-    const element = await this.driver.findElement(this.usernameInput);
-    await element.clear();
-    await element.sendKeys(username);
+    await this.clearText(this.usernameInput);
+    await this.enterText(this.usernameInput, username);
   }
 
   async enterPassword(password: string): Promise<void> {
-    const element = await this.driver.findElement(this.passwordInput);
-    await element.clear();
-    await element.sendKeys(password);
+    await this.clearText(this.passwordInput);
+    await this.enterText(this.passwordInput, password);
   }
 
   async clickLoginButton(): Promise<void> {
-    const element = await this.driver.findElement(this.loginButton);
-    await element.click();
+    await this.click(this.loginButton);
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -50,59 +46,47 @@ export class LoginPage {
   }
 
   async clickLogoutButton(): Promise<void> {
-    const element = await this.driver.findElement(this.logoutButton);
-    await element.click();
+    await this.click(this.logoutButton);
   }
 
   // Assertions
   async getFlashMessageText(): Promise<string> {
-    const element = await this.driver.findElement(this.flashMessage);
-    return await element.getText();
+    return await this.getElementText(this.flashMessage);
   }
 
   async getFlashMessageClass(): Promise<string> {
-    const element = await this.driver.findElement(this.flashMessage);
-    const classAttr = await element.getAttribute("class");
-    return classAttr || "";
+    return (await this.getElementAttribute(this.flashMessage, "class")) || "";
   }
 
   async getUsernameValue(): Promise<string> {
-    const element = await this.driver.findElement(this.usernameInput);
-    return await element.getAttribute("value");
+    return await this.getElementAttribute(this.usernameInput, "value");
   }
 
   async getPasswordValue(): Promise<string> {
-    const element = await this.driver.findElement(this.passwordInput);
-    return await element.getAttribute("value");
+    return await this.getElementAttribute(this.passwordInput, "value");
   }
 
   async getUsernameAttribute(attribute: string): Promise<string> {
-    const element = await this.driver.findElement(this.usernameInput);
-    return await element.getAttribute(attribute) || "";
+    return (await this.getElementAttribute(this.usernameInput, attribute)) || "";
   }
 
   async getPasswordAttribute(attribute: string): Promise<string> {
-    const element = await this.driver.findElement(this.passwordInput);
-    return await element.getAttribute(attribute) || "";
+    return (await this.getElementAttribute(this.passwordInput, attribute)) || "";
   }
 
   async getLoginButtonAttribute(attribute: string): Promise<string> {
-    const element = await this.driver.findElement(this.submitButtonByClass);
-    return await element.getAttribute(attribute) || "";
+    return (await this.getElementAttribute(this.submitButtonByClass, attribute)) || "";
   }
 
   async getHeaderText(): Promise<string> {
-    const element = await this.driver.findElement(this.loginHeader);
-    return await element.getText();
+    return await this.getElementText(this.loginHeader);
   }
 
   async isLogoutButtonPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.logoutButton);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.logoutButton);
   }
 
   async isLoginButtonPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.loginButton);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.loginButton);
   }
 }

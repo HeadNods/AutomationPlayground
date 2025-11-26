@@ -1,8 +1,8 @@
-import { By, WebDriver, WebElement } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class AddRemoveElementsPage {
-  private driver: WebDriver;
+export class AddRemoveElementsPage extends BasePage {
 
   // Locators
   private readonly addElementButton = By.xpath("//button[text()='Add Element']");
@@ -10,7 +10,7 @@ export class AddRemoveElementsPage {
   private readonly deleteButtons = By.xpath("//button[@class='added-manually']");
 
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world);
   }
 
   // Page URL
@@ -22,32 +22,23 @@ export class AddRemoveElementsPage {
   }
 
   async clickAddElement(): Promise<void> {
-    const element = await this.driver.findElement(this.addElementButton);
-    await element.click();
+    await this.click(this.addElementButton);
   }
 
   async clickDeleteButton(): Promise<void> {
-    const element = await this.driver.findElement(this.deleteButton);
-    await element.click();
+    await this.click(this.deleteButton);
   }
 
   async getDeleteButtonCount(): Promise<number> {
-    const elements = await this.driver.findElements(this.deleteButtons);
-    return elements.length;
+    return await this.getElementsCount(this.deleteButtons);
   }
 
   // Assertions
   async isDeleteButtonPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.deleteButton);
-    return elements.length > 0;
+    return this.isElementDisplayed(this.deleteButton);
   }
 
   async getAddElementButtonText(): Promise<string> {
-    const element = await this.driver.findElement(this.addElementButton);
-    return await element.getText();
-  }
-
-  async getAddElementButton(): Promise<WebElement> {
-    return await this.driver.findElement(this.addElementButton);
+    return await this.getElementText(this.addElementButton);
   }
 }

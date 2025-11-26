@@ -1,15 +1,14 @@
-import { By, WebDriver, WebElement } from "selenium-webdriver";
+import { By  } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class InputsPage {
-  private driver: WebDriver;
-
+export class InputsPage extends BasePage {
   // Locators
   private readonly numberInput = By.xpath("//input[@type='number']");
   private readonly exampleDiv = By.xpath("//div[@class='example']");
 
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world);
   }
 
   // Page URL
@@ -21,38 +20,28 @@ export class InputsPage {
   }
 
   async enterNumber(value: string): Promise<void> {
-    const element = await this.driver.findElement(this.numberInput);
-    await element.clear();
-    await element.sendKeys(value);
+    await this.clearText(this.numberInput);
+    await this.enterText(this.numberInput, value);
   }
 
   async clearInput(): Promise<void> {
-    const element = await this.driver.findElement(this.numberInput);
-    await element.clear();
+    await this.clearText(this.numberInput);
   }
 
   async appendNumber(value: string): Promise<void> {
-    const element = await this.driver.findElement(this.numberInput);
-    await element.sendKeys(value);
+    await this.enterText(this.numberInput, value);
   }
 
   // Assertions
   async getInputValue(): Promise<string> {
-    const element = await this.driver.findElement(this.numberInput);
-    return await element.getAttribute("value");
+    return await this.getElementAttribute(this.numberInput, "value");
   }
 
   async isInputPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.numberInput);
-    return elements.length > 0;
-  }
-
-  async getInputElement(): Promise<WebElement> {
-    return await this.driver.findElement(this.numberInput);
+    return await this.isElementDisplayed(this.numberInput);
   }
 
   async isExampleDivPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.exampleDiv);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.exampleDiv);
   }
 }

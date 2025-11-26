@@ -1,8 +1,8 @@
 import { By, WebDriver, until } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class DynamicControlsPage {
-  private driver: WebDriver;
+export class DynamicControlsPage extends BasePage  {
 
   // Locators
   private readonly removeButton = By.xpath("//button[text()='Remove']");
@@ -14,7 +14,7 @@ export class DynamicControlsPage {
   private readonly message = By.id("message");
 
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world)
   }
 
   // Page URL
@@ -26,26 +26,25 @@ export class DynamicControlsPage {
   }
 
   async clickRemoveButton(): Promise<void> {
-    const element = await this.driver.findElement(this.removeButton);
-    await element.click();
+    await this.click(this.removeButton);
   }
 
   async clickAddButton(): Promise<void> {
-    const element = await this.driver.findElement(this.addButton);
-    await element.click();
+    await this.click(this.addButton);
   }
 
   async clickEnableButton(): Promise<void> {
-    const element = await this.driver.findElement(this.enableButton);
-    await element.click();
+    await this.click(this.enableButton);
   }
 
   async clickDisableButton(): Promise<void> {
-    const element = await this.driver.findElement(this.disableButton);
-    await element.click();
+    await this.click(this.disableButton);
   }
 
   async waitForAddButtonToDisplay(timeoutInSeconds: number = 10): Promise<void> {
+    await this.waitForElementToBeLocated(this.addButton, timeoutInSeconds);
+    await this.waitForElementToDisplay(this.addButton, timeoutInSeconds);
+    /*
     await this.driver.wait(
       until.elementLocated(this.addButton),
       timeoutInSeconds * 1000
@@ -54,9 +53,13 @@ export class DynamicControlsPage {
       until.elementIsVisible(await this.driver.findElement(this.addButton)),
       timeoutInSeconds * 1000
     );
+    */
   }
 
   async waitForRemoveButtonToDisplay(timeoutInSeconds: number = 10): Promise<void> {
+    await this.waitForElementToBeLocated(this.removeButton, timeoutInSeconds);
+    await this.waitForElementToDisplay(this.removeButton, timeoutInSeconds);
+    /*
     await this.driver.wait(
       until.elementLocated(this.removeButton),
       timeoutInSeconds * 1000
@@ -65,31 +68,28 @@ export class DynamicControlsPage {
       until.elementIsVisible(await this.driver.findElement(this.removeButton)),
       timeoutInSeconds * 1000
     );
+    */
   }
 
   // Assertions
   async isRemoveButtonPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.removeButton);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.removeButton);
   }
 
   async isAddButtonPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.addButton);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.addButton);
   }
 
   async isCheckboxPresent(): Promise<boolean> {
-    const elements = await this.driver.findElements(this.checkbox);
-    return elements.length > 0;
+    return await this.isElementDisplayed(this.checkbox);
   }
 
   async isInputFieldEnabled(): Promise<boolean> {
-    const element = await this.driver.findElement(this.inputField);
+    const element = await this.getElement(this.inputField);
     return await element.isEnabled();
   }
 
   async getMessage(): Promise<string> {
-    const element = await this.driver.findElement(this.message);
-    return await element.getText();
+    return await this.getElementText(this.message);
   }
 }

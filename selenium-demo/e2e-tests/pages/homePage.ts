@@ -1,11 +1,10 @@
-import { By, WebDriver } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { World } from "../support/driverController";
+import { BasePage } from "./basePage";
 
-export class HomePage {
-  private driver: WebDriver;
-
+export class HomePage extends BasePage {
   constructor(world: World) {
-    this.driver = world.driver;
+    super(world);
   }
 
   // Page URL
@@ -18,26 +17,24 @@ export class HomePage {
 
   async clickLink(linkText: string): Promise<void> {
     const link = By.xpath(`//a[text()="${linkText}"]`);
-    const element = await this.driver.findElement(link);
-    await element.click();
+     await this.click(link);
   }
 
   async clickLinkWithPartialText(partialText: string): Promise<void> {
     const link = By.xpath(`//a[contains(text(), "${partialText}")]`);
-    const element = await this.driver.findElement(link);
-    await element.click();
+    await this.click(link);
   }
 
   async navigateBack(): Promise<void> {
-    await this.driver.navigate().back();
+    await this.navigatePage("back");
   }
 
   async navigateForward(): Promise<void> {
-    await this.driver.navigate().forward();
+    await this.navigatePage("forward");
   }
 
   async refresh(): Promise<void> {
-    await this.driver.navigate().refresh();
+    await this.refreshPage();
   }
 
   async closeBrowser(): Promise<void> {
@@ -46,22 +43,20 @@ export class HomePage {
 
   // Assertions
   async getPageTitle(): Promise<string> {
-    return await this.driver.getTitle();
+    return await this.getTitle();
   }
 
   async getCurrentUrl(): Promise<string> {
-    return await this.driver.getCurrentUrl();
+    return await this.getUrl();
   }
 
   async isLinkPresent(linkText: string): Promise<boolean> {
     const link = By.xpath(`//a[text()="${linkText}"]`);
-    const elements = await this.driver.findElements(link);
-    return elements.length > 0;
+    return await this.isElementDisplayed(link);
   }
 
   async isLinkWithPartialTextPresent(partialText: string): Promise<boolean> {
     const link = By.xpath(`//a[contains(text(), "${partialText}")]`);
-    const elements = await this.driver.findElements(link);
-    return elements.length > 0;
+    return await this.isElementDisplayed(link);
   }
 }
