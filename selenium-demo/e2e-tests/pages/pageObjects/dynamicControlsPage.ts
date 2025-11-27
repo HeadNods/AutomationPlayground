@@ -1,4 +1,4 @@
-import { By, WebDriver, until } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { World } from "../../support/driverController";
 import { BasePage } from "../basePage";
 

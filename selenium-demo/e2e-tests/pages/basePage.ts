@@ -168,8 +168,12 @@ export class BasePage {
             this.world,
             `waiting ${seconds} seconds for element ${locator} to display`,
         );
+        const element = await this.driver.wait(
+            until.elementLocated(locator),
+            +seconds * 1000,
+        );
         await this.driver.wait(
-            until.elementIsVisible(await this.driver.findElement(locator)),
+            until.elementIsVisible(element),
             +seconds * 1000,
         );
         this.duration("wait for element to display", startTime, seconds);
@@ -861,7 +865,7 @@ export class BasePage {
     ) {
         this.debugLog(this.world, `checking element displayed status ${locator}`);
         try {
-            await this.waitForElementToBeLocated(locator, 4);
+            await this.waitForElementToBeLocated(locator, 3);
         } catch (err) {
             this.debugLog(this.world, `element ${locator} not found`);
             return false;
@@ -869,6 +873,19 @@ export class BasePage {
 
         let element = await this.getElement(locator);
         return element.isDisplayed();
+    }
+    /**
+     * Description: checks the element its presence in the DOM and returns true/false.
+     *
+     * @export
+     * @async
+     * @param {By} locator
+     * @returns boolean
+     */
+    protected async isElementInDOM(locator: By) {
+        this.debugLog(this.world, `checking if element is in DOM ${locator}`);
+        let elements = await this.getElements(locator);
+        return elements.length !== 0;
     }
     /**
      * Description: returns the alert

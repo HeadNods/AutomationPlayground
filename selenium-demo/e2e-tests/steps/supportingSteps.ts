@@ -12,6 +12,7 @@ import { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsC
 import { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 import { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
 import { DropdownPage } from "../pages/pageObjects/dropdownPage";
+import { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
 
 // Initialize page objects after clicking links from home page
 const initializePage = async function (this: World, pageName: string) {
@@ -51,6 +52,9 @@ const initializePage = async function (this: World, pageName: string) {
       break;
     case "Dropdown":
       this.dropdownPage = new DropdownPage(this);
+      break;
+    case "Dynamic Loading":
+      this.dynamicLoadingPage = new DynamicLoadingPage(this);
       break;
     default:
       throw new Error(`Unknown page: ${pageName}. Please add it to the supportingSteps.ts switch statement.`);

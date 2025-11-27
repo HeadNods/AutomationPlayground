@@ -20,6 +20,7 @@ import type { LoginPage } from "../pages/pageObjects/loginPage";
 import type { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 import { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
 import { DropdownPage } from "../pages/pageObjects/dropdownPage";
+import { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
 
 interface BrowserConfig {
     browser: string;
@@ -78,6 +79,7 @@ export class World extends CucumberWorld {
     brokenImagesPage: BrokenImagesPage;
     challengingDOMPage: ChallengingDOMPage;
     dropdownPage: DropdownPage;
+    dynamicLoadingPage: DynamicLoadingPage
 
     constructor(options: any) {
         super(options);
