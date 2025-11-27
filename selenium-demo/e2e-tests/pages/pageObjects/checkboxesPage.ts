@@ -16,7 +16,7 @@ export class CheckboxesPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/checkboxes";
+  readonly url = "https://the-internet.herokuapp.com/checkboxes";
 
   // Actions
   async navigate(): Promise<void> {

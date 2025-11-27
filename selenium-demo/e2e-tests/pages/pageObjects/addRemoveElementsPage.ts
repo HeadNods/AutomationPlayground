@@ -14,7 +14,7 @@ export class AddRemoveElementsPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/add_remove_elements/";
+  readonly url = "https://the-internet.herokuapp.com/add_remove_elements/";
 
   // Actions
   async navigate(): Promise<void> {

@@ -8,7 +8,7 @@ export class HomePage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/";
+  readonly url = "https://the-internet.herokuapp.com/";
 
   // Actions
   async navigate(): Promise<void> {

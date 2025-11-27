@@ -13,7 +13,7 @@ export class DragAndDropPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/drag_and_drop";
+  readonly url = "https://the-internet.herokuapp.com/drag_and_drop";
 
   // Actions
   async navigate(): Promise<void> {

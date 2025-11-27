@@ -18,7 +18,7 @@ export class DynamicControlsPage extends BasePage  {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/dynamic_controls";
+  readonly url = "https://the-internet.herokuapp.com/dynamic_controls";
 
   // Actions
   async navigate(): Promise<void> {
@@ -44,31 +44,11 @@ export class DynamicControlsPage extends BasePage  {
   async waitForAddButtonToDisplay(timeoutInSeconds: number = 10): Promise<void> {
     await this.waitForElementToBeLocated(this.addButton, timeoutInSeconds);
     await this.waitForElementToDisplay(this.addButton, timeoutInSeconds);
-    /*
-    await this.driver.wait(
-      until.elementLocated(this.addButton),
-      timeoutInSeconds * 1000
-    );
-    await this.driver.wait(
-      until.elementIsVisible(await this.driver.findElement(this.addButton)),
-      timeoutInSeconds * 1000
-    );
-    */
   }
 
   async waitForRemoveButtonToDisplay(timeoutInSeconds: number = 10): Promise<void> {
     await this.waitForElementToBeLocated(this.removeButton, timeoutInSeconds);
     await this.waitForElementToDisplay(this.removeButton, timeoutInSeconds);
-    /*
-    await this.driver.wait(
-      until.elementLocated(this.removeButton),
-      timeoutInSeconds * 1000
-    );
-    await this.driver.wait(
-      until.elementIsVisible(await this.driver.findElement(this.removeButton)),
-      timeoutInSeconds * 1000
-    );
-    */
   }
 
   // Assertions

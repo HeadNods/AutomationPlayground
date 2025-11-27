@@ -17,8 +17,8 @@ export class LoginPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/login";
-  readonly secureAreaUrl = "http://the-internet.herokuapp.com/secure";
+  readonly url = "https://the-internet.herokuapp.com/login";
+  readonly secureAreaUrl = "https://the-internet.herokuapp.com/secure";
 
   // Actions
   async navigate(): Promise<void> {

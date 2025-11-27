@@ -11,7 +11,7 @@ export class BrokenImagesPage extends BasePage {
         super(world);
     }
     //Page URL
-    readonly url = "http://the-internet.herokuapp.com/broken_images"
+    readonly url = "https://the-internet.herokuapp.com/broken_images"
     //Actions
     async navigate(): Promise<void> {
         await this.driver.get(this.url);

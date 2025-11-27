@@ -12,7 +12,7 @@ export class ContextMenuPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/context_menu";
+  readonly url = "https://the-internet.herokuapp.com/context_menu";
 
   // Actions
   async navigate(): Promise<void> {

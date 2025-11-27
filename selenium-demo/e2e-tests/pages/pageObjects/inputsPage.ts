@@ -12,7 +12,7 @@ export class InputsPage extends BasePage {
   }
 
   // Page URL
-  readonly url = "http://the-internet.herokuapp.com/inputs";
+  readonly url = "https://the-internet.herokuapp.com/inputs";
 
   // Actions
   async navigate(): Promise<void> {
