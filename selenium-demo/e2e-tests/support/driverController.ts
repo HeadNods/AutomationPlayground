@@ -18,9 +18,10 @@ import type { InputsPage } from "../pages/pageObjects/inputsPage";
 import type { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
 import type { LoginPage } from "../pages/pageObjects/loginPage";
 import type { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
-import { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
-import { DropdownPage } from "../pages/pageObjects/dropdownPage";
-import { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
+import type { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
+import type { DropdownPage } from "../pages/pageObjects/dropdownPage";
+import type { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
+import type { FileUploadPage } from "../pages/pageObjects/fileUploadPage";
 
 interface BrowserConfig {
     browser: string;
@@ -34,6 +35,7 @@ function getBrowserOptions(browser: string): BrowserConfig {
         "--disable-extensions",
         "--start-maximized",
         "--headless",
+        "--disable-gpu",
         "--no-sandbox",
         "--disable-dev-shm-usage"
     ];
@@ -79,7 +81,8 @@ export class World extends CucumberWorld {
     brokenImagesPage: BrokenImagesPage;
     challengingDOMPage: ChallengingDOMPage;
     dropdownPage: DropdownPage;
-    dynamicLoadingPage: DynamicLoadingPage
+    dynamicLoadingPage: DynamicLoadingPage;
+    fileUploadPage: FileUploadPage;
 
     constructor(options: any) {
         super(options);
@@ -87,20 +90,27 @@ export class World extends CucumberWorld {
 
     async init() {
         const seleniumGrid = process.env.SELENIUM_GRID;
-        if (!seleniumGrid) {
-            throw new Error("SELENIUM_GRID environment variable is not set. Please check your .env file.");
-        }
-
         const browser = process.env.BROWSER || "chrome";
         const { browser: browserName, options } = getBrowserOptions(browser);
         
-        console.log(`Connecting to Selenium Grid at: ${seleniumGrid}`);
-        console.log(`Using browser: ${browser}`);
+        if (seleniumGrid) {
+            console.log(`Connecting to Selenium Grid at: ${seleniumGrid}`);
+            console.log(`Using browser: ${browser}`);
+        } else {
+            console.log(`Running locally with ${browser}`);
+            // For local runs, chromedriver package will be used (already in node_modules/.bin)
+            const chromedriverPath = require('chromedriver').path;
+            console.log(`Using ChromeDriver from: ${chromedriverPath}`);
+        }
         
         try {
             const builder = new Builder()
-                .forBrowser(browserName)
-                .usingServer(seleniumGrid);
+                .forBrowser(browserName);
+
+            // Only use Selenium Grid if URL is provided
+            if (seleniumGrid) {
+                builder.usingServer(seleniumGrid);
+            }
 
             // Set browser-specific options
             if (options instanceof chrome.Options) {
@@ -111,6 +121,7 @@ export class World extends CucumberWorld {
                 builder.setEdgeOptions(options);
             }
 
+            console.log("Building WebDriver...");
             this.driver = await builder.build();
             this.driverInitialized = true;
             console.log("Driver initialized successfully");

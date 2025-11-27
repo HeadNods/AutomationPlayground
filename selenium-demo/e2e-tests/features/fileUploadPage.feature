@@ -10,12 +10,12 @@ Feature: File Upload Page
     And I click the upload submit button
     Then the uploaded file name should be "exampleTinyFile.png"
     And the file upload header should have changed into "File Uploaded!"
-
-  @fileUpload @dragAndDrop @bugged @skip
-  Scenario: Upload a file via drag and drop
-    When I upload the file "e2e-tests/support/data/exampleTinyFile.png" via drag and drop
-    Then the dropzone should display the file name "exampleTinyFile.png"
-    And I wait for 3 seconds
-    And I click the upload submit button
-    Then the uploaded file name should be "exampleTinyFile.png"
-    And the file upload header should have changed into "File Uploaded!"
+############################################################################### BUGGED - Hidden file upload does not work correctly with Selenium
+#  @fileUpload @dragAndDrop @bugged @skip
+#  Scenario: Upload a file via drag and drop
+#    When I upload the file "e2e-tests/support/data/exampleTinyFile.png" via drag and drop
+#    Then the dropzone should display the file name "exampleTinyFile.png"
+#    And I wait for 3 seconds
+#    And I click the upload submit button
+#    Then the uploaded file name should be "exampleTinyFile.png"
+#    And the file upload header should have changed into "File Uploaded!"
