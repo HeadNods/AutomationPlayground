@@ -63,3 +63,10 @@ const initializePage = async function (this: World, pageName: string) {
 
 When(/^I am on the (.*?) (?:page|component)$/, initializePage);
 Then(/^I should be on the (.*?) (?:page|component)$/, initializePage);
+// Wait operations
+When(
+  /^I wait for (\d+) seconds?$/,
+  async function (this: World, seconds: string) {
+    await this.driver.sleep(parseInt(seconds) * 1000);
+  }
+);

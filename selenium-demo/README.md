@@ -122,6 +122,10 @@ npm run cucumber -- --tags "(@clicks or @assertions) and not @disabled"
 - `@brokenImagesPage`, `@addRemoveElementsPage`, ... - Page-specific tests
 - `@disabled` - Tests that are currently disabled (excluded by default)
 
+### Viewing the tests live:
+
+Navigate to http://localhost:7900/.
+
 ## Project Structure
 
 ```

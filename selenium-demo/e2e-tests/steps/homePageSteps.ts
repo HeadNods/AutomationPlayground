@@ -81,11 +81,3 @@ When(
     await this.homePage.closeBrowser();
   }
 );
-
-// Wait operations
-When(
-  /^I wait for (\d+) seconds?$/,
-  async function (this: World, seconds: string) {
-    await this.driver.sleep(parseInt(seconds) * 1000);
-  }
-);
