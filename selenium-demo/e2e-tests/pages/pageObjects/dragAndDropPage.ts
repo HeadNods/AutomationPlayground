@@ -21,18 +21,10 @@ export class DragAndDropPage extends BasePage {
   }
 
   async dragColumnAToColumnB(): Promise<void> {
-    //const sourceElement = await this.getElement(this.columnA);
-    //const targetElement = await this.getElement(this.columnB);
     await this.dragAndDrop(this.columnA, this.columnB);
-    //const actions = this.driver.actions({ async: true });
-    //await actions.dragAndDrop(sourceElement, targetElement).perform();
   }
 
   async dragColumnBToColumnA(): Promise<void> {
-    //const sourceElement = await this.getElement(this.columnB);
-    //const targetElement = await this.getElement(this.columnA);
-    //const actions = this.driver.actions({ async: true });
-    //await actions.dragAndDrop(sourceElement, targetElement).perform();
     await this.dragAndDrop(this.columnB, this.columnA);
   }
 

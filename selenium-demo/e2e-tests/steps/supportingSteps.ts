@@ -11,6 +11,7 @@ import { LoginPage } from "../pages/pageObjects/loginPage";
 import { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
 import { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 import { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
+import { DropdownPage } from "../pages/pageObjects/dropdownPage";
 
 // Initialize page objects after clicking links from home page
 const initializePage = async function (this: World, pageName: string) {
@@ -47,6 +48,9 @@ const initializePage = async function (this: World, pageName: string) {
       break;
     case "Challenging DOM":
       this.challengingDOMPage = new ChallengingDOMPage(this);
+      break;
+    case "Dropdown":
+      this.dropdownPage = new DropdownPage(this);
       break;
     default:
       throw new Error(`Unknown page: ${pageName}. Please add it to the supportingSteps.ts switch statement.`);

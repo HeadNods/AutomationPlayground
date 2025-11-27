@@ -19,6 +19,7 @@ import type { JavascriptAlertsComponent } from "../pages/components/javascriptAl
 import type { LoginPage } from "../pages/pageObjects/loginPage";
 import type { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 import { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage";
+import { DropdownPage } from "../pages/pageObjects/dropdownPage";
 
 interface BrowserConfig {
     browser: string;
@@ -76,6 +77,7 @@ export class World extends CucumberWorld {
     loginPage: LoginPage;
     brokenImagesPage: BrokenImagesPage;
     challengingDOMPage: ChallengingDOMPage;
+    dropdownPage: DropdownPage;
 
     constructor(options: any) {
         super(options);
