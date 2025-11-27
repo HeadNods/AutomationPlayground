@@ -1,4 +1,5 @@
 import { Given, Then, When } from "@cucumber/cucumber";
+import { World } from "../support/driverController";
 import { AddRemoveElementsPage } from "../pages/pageObjects/addRemoveElementsPage";
 import { CheckboxesPage } from "../pages/pageObjects/checkboxesPage";
 import { ContextMenuPage } from "../pages/pageObjects/contextMenuPage";
@@ -8,7 +9,7 @@ import { HomePage } from "../pages/pageObjects/homePage";
 import { InputsPage } from "../pages/pageObjects/inputsPage";
 import { LoginPage } from "../pages/pageObjects/loginPage";
 import { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
-import { World } from "../support/driverController";
+import { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 
 // Initialize page objects after clicking links from home page
 const initializePage = async function (this: World, pageName: string) {
@@ -39,6 +40,9 @@ const initializePage = async function (this: World, pageName: string) {
       break;
     case "Login":
       this.loginPage = new LoginPage(this);
+      break;
+    case "Broken Images":
+      this.brokenImagesPage = new BrokenImagesPage(this);
       break;
     default:
       throw new Error(`Unknown page: ${pageName}. Please add it to the supportingSteps.ts switch statement.`);

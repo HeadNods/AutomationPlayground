@@ -17,6 +17,7 @@ import type { DynamicControlsPage } from "../pages/pageObjects/dynamicControlsPa
 import type { InputsPage } from "../pages/pageObjects/inputsPage";
 import type { JavascriptAlertsComponent } from "../pages/components/javascriptAlertsComponent";
 import type { LoginPage } from "../pages/pageObjects/loginPage";
+import type { BrokenImagesPage } from "../pages/pageObjects/brokenImagesPage";
 
 interface BrowserConfig {
     browser: string;
@@ -72,6 +73,7 @@ export class World extends CucumberWorld {
     inputsPage: InputsPage;
     javascriptAlertsComponent: JavascriptAlertsComponent;
     loginPage: LoginPage;
+    brokenImagesPage: BrokenImagesPage;
 
     constructor(options: any) {
         super(options);

@@ -82,6 +82,46 @@ npm run test:edge
 npm run test:chrome-for-testing
 ```
 
+### Running Tests by Cucumber Tags
+
+You can run specific tests based on cucumber tags defined in your feature files. Use the `--tags` flag with the npm cucumber script.
+Do not forget to launch selenium grid in docker first!
+
+Run tests with a specific tag:
+
+```bash
+npm run cucumber -- --tags "@clicks"
+```
+
+Run tests with multiple tags (AND logic):
+
+```bash
+npm run cucumber -- --tags "@checkboxes and @clicks"
+```
+
+Run tests with any of the specified tags (OR logic):
+
+```bash
+npm run cucumber -- --tags "@clicks or @assertions"
+```
+
+Exclude tests with a specific tag:
+
+```bash
+npm run cucumber -- --tags "not @disabled"
+```
+
+Combine multiple tag expressions:
+
+```bash
+npm run cucumber -- --tags "(@clicks or @assertions) and not @disabled"
+```
+
+**Common tags in this project:**
+- `@POM` - Page Object Model tests
+- `@brokenImagesPage`, `@addRemoveElementsPage`, ... - Page-specific tests
+- `@disabled` - Tests that are currently disabled (excluded by default)
+
 ## Project Structure
 
 ```

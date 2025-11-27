@@ -61,6 +61,15 @@ export class BasePage {
     }
 
     /**
+     * Gets all elements found by locator
+     * @param locator - By locator of the element
+     * @returns Promise<WebElement[]>
+     */
+    protected async getElements(locator: By): Promise<WebElement[]> {
+        return await this.driver.findElements(locator);
+    }
+
+    /**
    * Description: Gets the page title
    *
    * @returns Promise<string>
@@ -868,5 +877,21 @@ export class BasePage {
      */
     protected async getAlert() {
       return await this.driver.switchTo().alert();
+    }
+
+    /**
+     * Description: Get the image it's visibility status
+     * 
+     * @param webElement - WebElement of the image
+     * @returns Promise<boolean> - true if image is visible, false otherwise
+     */
+    protected async isImageVisible(webElement: WebElement): Promise<boolean> {
+      const isDisplayed = await webElement.isDisplayed();
+      if (!isDisplayed) {
+        return false;
+      }
+      // The following to make sure it is a valid image and loaded in correctly:
+      const isVisible: boolean = await this.driver.executeScript("return (typeof arguments[0].naturalWidth !=\"undefined\" && arguments[0].naturalWidth > 0);", webElement);
+      return isVisible;
     }
 }
