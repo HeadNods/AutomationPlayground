@@ -23,6 +23,7 @@ import type { DropdownPage } from "../pages/pageObjects/dropdownPage";
 import type { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
 import type { FileUploadPage } from "../pages/pageObjects/fileUploadPage";
 import { IframePage } from "../pages/pageObjects/iframePage";
+import { GeoLocationPage } from "../pages/pageObjects/geoLocationPage";
 
 interface BrowserConfig {
     browser: string;
@@ -87,6 +88,7 @@ export class World extends CucumberWorld {
     dynamicLoadingPage: DynamicLoadingPage;
     fileUploadPage: FileUploadPage;
     iframePage: IframePage;
+    geoLocationPage: GeoLocationPage;
 
     constructor(options: any) {
         super(options);
