@@ -1,12 +1,10 @@
 import { config } from "dotenv";
 config(); // Load .env file
-
 import { World as CucumberWorld, setWorldConstructor, setDefaultTimeout } from "@cucumber/cucumber";
 import { Builder, WebDriver } from "selenium-webdriver";
 import chrome from "selenium-webdriver/chrome";
 import firefox from "selenium-webdriver/firefox";
 import edge from "selenium-webdriver/edge";
-
 // Use type imports to avoid loading page classes at runtime
 import type { HomePage } from "../pages/pageObjects/homePage";
 import type { AddRemoveElementsPage } from "../pages/pageObjects/addRemoveElementsPage";
@@ -25,6 +23,7 @@ import type { FileUploadPage } from "../pages/pageObjects/fileUploadPage";
 import type { IframePage } from "../pages/pageObjects/iframePage";
 import type { GeoLocationPage } from "../pages/pageObjects/geoLocationPage";
 import type { HorizontalSliderPage } from "../pages/pageObjects/horizontalSliderPage";
+import type { HoverPage } from "../pages/pageObjects/hoverPage";
 
 interface BrowserConfig {
     browser: string;
@@ -91,6 +90,7 @@ export class World extends CucumberWorld {
     iframePage: IframePage;
     geoLocationPage: GeoLocationPage;
     horizontalSliderPage: HorizontalSliderPage;
+    hoverPage: HoverPage;
 
     constructor(options: any) {
         super(options);
