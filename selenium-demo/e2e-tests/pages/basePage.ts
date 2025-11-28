@@ -1,6 +1,7 @@
 import { By, until, WebDriver, WebElement, Key } from "selenium-webdriver";
 import { World } from "../support/driverController";
 import debug from "debug";
+import chrome from "selenium-webdriver/chrome";
 
 export type Logger = (self: World, message: string) => void;
 
@@ -783,26 +784,26 @@ export class BasePage {
         await this.driver.manage().window().maximize();
     }
 
-  /**
-   * Performs drag and drop between two elements (Firefox-compatible)
-   * @param sourceLocator - By locator of the element to drag
-   * @param targetLocator - By locator of the drop target element
-   * @returns Promise<void>
-   */
-  protected async dragAndDrop(
-    sourceLocator: By,
-    targetLocator: By,
-  ): Promise<void> {
-    this.debugLog(
-      this.world,
-      `dragging ${sourceLocator} to ${targetLocator}`,
-    );
+    /**
+     * Performs drag and drop between two elements (Firefox-compatible)
+     * @param sourceLocator - By locator of the element to drag
+     * @param targetLocator - By locator of the drop target element
+     * @returns Promise<void>
+     */
+    protected async dragAndDrop(
+        sourceLocator: By,
+        targetLocator: By,
+    ): Promise<void> {
+        this.debugLog(
+            this.world,
+            `dragging ${sourceLocator} to ${targetLocator}`,
+        );
 
-    const sourceElement = await this.getElement(sourceLocator);
-    const targetElement = await this.getElement(targetLocator);
+        const sourceElement = await this.getElement(sourceLocator);
+        const targetElement = await this.getElement(targetLocator);
 
-    // Use JavaScript-based drag and drop for Firefox compatibility
-    const script = `
+        // Use JavaScript-based drag and drop for Firefox compatibility
+        const script = `
       function simulateDragDrop(sourceNode, destinationNode) {
         var EVENT_TYPES = {
           DRAG_END: 'dragend',
@@ -849,8 +850,8 @@ export class BasePage {
       simulateDragDrop(arguments[0], arguments[1]);
     `;
 
-    await this.driver.executeScript(script, sourceElement, targetElement);
-  }
+        await this.driver.executeScript(script, sourceElement, targetElement);
+    }
     /**
      * Description: checks the element displayed status and returns true/false.  Throws an
      * error if it finds more than one of the same element.
@@ -893,7 +894,7 @@ export class BasePage {
      * @returns Promise<Alert>
      */
     protected async getAlert() {
-      return await this.driver.switchTo().alert();
+        return await this.driver.switchTo().alert();
     }
 
     /**
@@ -902,7 +903,7 @@ export class BasePage {
      * @returns Promise<void>
      */
     protected async switchToFrame(locator: By) {
-      await this.driver.switchTo().frame(await this.getElement(locator));
+        await this.driver.switchTo().frame(await this.getElement(locator));
     }
 
     /**
@@ -911,7 +912,7 @@ export class BasePage {
      * @returns Promise<void>
      */
     protected async switchToDefaultContent() {
-      await this.driver.switchTo().defaultContent();
+        await this.driver.switchTo().defaultContent();
     }
 
     /**
@@ -921,12 +922,59 @@ export class BasePage {
      * @returns Promise<boolean> - true if image is visible, false otherwise
      */
     protected async isImageVisible(webElement: WebElement): Promise<boolean> {
-      const isDisplayed = await webElement.isDisplayed();
-      if (!isDisplayed) {
-        return false;
-      }
-      // The following to make sure it is a valid image and loaded in correctly:
-      const isVisible: boolean = await this.driver.executeScript("return (typeof arguments[0].naturalWidth !=\"undefined\" && arguments[0].naturalWidth > 0);", webElement);
-      return isVisible;
+        const isDisplayed = await webElement.isDisplayed();
+        if (!isDisplayed) {
+            return false;
+        }
+        // The following to make sure it is a valid image and loaded in correctly:
+        const isVisible: boolean = await this.driver.executeScript("return (typeof arguments[0].naturalWidth !=\"undefined\" && arguments[0].naturalWidth > 0);", webElement);
+        return isVisible;
+    }
+
+    // TODO: This method currently works only with Chromium (Selenium limitation). Extend support to other browsers as needed.
+    /**
+     * Description: Captures network request and response when clicking an element.
+     * 
+     * @param locator - By locator of the element to click
+     * @param urlFilter - String to match in the URL to capture the specific request
+     * @returns Promise<{ url: string, statusCode: number } | null>
+     */
+    protected async getClickRequestResponse(locator: By, urlFilter: string): Promise<{ url: string, statusCode: number } | null> {
+        try {
+            const driver = this.driver as any;
+            
+            // Enable network tracking
+            await driver.sendDevToolsCommand('Network.enable', {});
+
+            let capturedResponse: { url: string, statusCode: number } | null = null;
+
+            // Set up CDP event listener using the executor's command
+            const connection = await driver.createCDPConnection('page');
+            
+            connection.on('Network.responseReceived', (params: any) => {
+                if (params.response.url.includes(urlFilter)) {
+                    capturedResponse = {
+                        url: params.response.url,
+                        statusCode: params.response.status
+                    };
+                }
+            });
+
+            // Perform the click
+            await this.click(locator);
+
+            // Wait for response to be captured
+            await this.wait(3);
+
+            // Disable network tracking
+            await driver.sendDevToolsCommand('Network.disable', {});
+
+            this.debugLog(this.world, `Captured response: ${JSON.stringify(capturedResponse)}`);
+            return capturedResponse;
+        } catch (error) {
+            this.debugLog(this.world, `CDP error: ${error.message} - falling back to regular click`);
+            await this.click(locator);
+            return null;
+        }
     }
 }

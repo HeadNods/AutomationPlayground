@@ -24,6 +24,7 @@ import type { IframePage } from "../pages/pageObjects/iframePage";
 import type { GeoLocationPage } from "../pages/pageObjects/geoLocationPage";
 import type { HorizontalSliderPage } from "../pages/pageObjects/horizontalSliderPage";
 import type { HoverPage } from "../pages/pageObjects/hoverPage";
+import type { RedirectorPage } from "../pages/pageObjects/redirectorPage";
 
 interface BrowserConfig {
     browser: string;
@@ -91,6 +92,8 @@ export class World extends CucumberWorld {
     geoLocationPage: GeoLocationPage;
     horizontalSliderPage: HorizontalSliderPage;
     hoverPage: HoverPage;
+    redirectorPage: RedirectorPage;
+    networkResponse: { url: string, statusCode: number } | null;
 
     constructor(options: any) {
         super(options);
