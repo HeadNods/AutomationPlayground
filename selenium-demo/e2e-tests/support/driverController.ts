@@ -22,8 +22,9 @@ import type { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage
 import type { DropdownPage } from "../pages/pageObjects/dropdownPage";
 import type { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
 import type { FileUploadPage } from "../pages/pageObjects/fileUploadPage";
-import { IframePage } from "../pages/pageObjects/iframePage";
-import { GeoLocationPage } from "../pages/pageObjects/geoLocationPage";
+import type { IframePage } from "../pages/pageObjects/iframePage";
+import type { GeoLocationPage } from "../pages/pageObjects/geoLocationPage";
+import type { HorizontalSliderPage } from "../pages/pageObjects/horizontalSliderPage";
 
 interface BrowserConfig {
     browser: string;
@@ -89,6 +90,7 @@ export class World extends CucumberWorld {
     fileUploadPage: FileUploadPage;
     iframePage: IframePage;
     geoLocationPage: GeoLocationPage;
+    horizontalSliderPage: HorizontalSliderPage;
 
     constructor(options: any) {
         super(options);
