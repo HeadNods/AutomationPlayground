@@ -22,6 +22,7 @@ import type { ChallengingDOMPage } from "../pages/pageObjects/challengingDOMPage
 import type { DropdownPage } from "../pages/pageObjects/dropdownPage";
 import type { DynamicLoadingPage } from "../pages/pageObjects/dynamicLoadingPage";
 import type { FileUploadPage } from "../pages/pageObjects/fileUploadPage";
+import { IframePage } from "../pages/pageObjects/iframePage";
 
 interface BrowserConfig {
     browser: string;
@@ -37,7 +38,9 @@ function getBrowserOptions(browser: string): BrowserConfig {
         "--headless",
         "--disable-gpu",
         "--no-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
+        "--disable-blink-features=AutomationControlled",
+        "--disable-notifications"
     ];
 
     switch (browser.toLowerCase()) {
@@ -83,6 +86,7 @@ export class World extends CucumberWorld {
     dropdownPage: DropdownPage;
     dynamicLoadingPage: DynamicLoadingPage;
     fileUploadPage: FileUploadPage;
+    iframePage: IframePage;
 
     constructor(options: any) {
         super(options);

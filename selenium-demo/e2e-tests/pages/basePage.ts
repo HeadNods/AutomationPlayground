@@ -897,6 +897,24 @@ export class BasePage {
     }
 
     /**
+     * Description: Changes the focus of all future commands to another frame on the page.
+     *
+     * @returns Promise<void>
+     */
+    protected async switchToFrame(locator: By) {
+      await this.driver.switchTo().frame(await this.getElement(locator));
+    }
+
+    /**
+     * Description: Switches focus of all future commands to the topmost frame in the current window.
+     *
+     * @returns Promise<void>
+     */
+    protected async switchToDefaultContent() {
+      await this.driver.switchTo().defaultContent();
+    }
+
+    /**
      * Description: Get the image it's visibility status
      * 
      * @param webElement - WebElement of the image
