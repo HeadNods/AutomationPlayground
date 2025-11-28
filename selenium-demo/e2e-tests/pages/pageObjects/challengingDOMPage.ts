@@ -179,6 +179,7 @@ export class ChallengingDOMPage extends BasePage {
         return buttonHrefs;
     }
     async getAnswerValueFromScript(): Promise<string> {
+        await this.waitForElementToBeLocated(this.answerScript, 3);
         const scriptElement = await this.getElement(this.answerScript);
         const scriptContent = await scriptElement.getAttribute("innerHTML");
         const answerMatch = scriptContent.match(/'Answer: (\d+)'/);

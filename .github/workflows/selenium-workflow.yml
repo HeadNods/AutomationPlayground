@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
+      fail-fast: false  # Prevents one browser specific job to cancel the other ones on a single failed test.
       matrix:
         browser: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', inputs.browser)) || fromJSON('["chrome", "firefox", "edge"]') }}
     
