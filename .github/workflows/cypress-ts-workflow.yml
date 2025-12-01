@@ -1,0 +1,117 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'cypress-ts-demo/**'
+      - '.github/workflows/cypress-ts-workflow.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'cypress-ts-demo/**'
+  workflow_dispatch:
+    inputs:
+      use_docker:
+        description: 'Run tests in Docker container'
+        required: false
+        type: boolean
+        default: false
+      browser:
+        description: 'Browser to use (chrome/firefox/edge/electron)'
+        required: false
+        type: choice
+        options:
+          - electron
+          - chrome
+          - firefox
+          - edge
+        default: electron
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: cypress-ts-demo/package.json
+      
+      - name: Install dependencies
+        working-directory: cypress-ts-demo
+        run: npm install
+      
+      - name: Run Cypress tests (non-Docker)
+        if: ${{ !inputs.use_docker }}
+        working-directory: cypress-ts-demo
+        run: |
+          if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
+            npm run test:${{ inputs.browser }}
+          else
+            npm test
+          fi
+      
+      - name: Run Cypress tests (Docker)
+        if: ${{ inputs.use_docker }}
+        working-directory: cypress-ts-demo
+        run: |
+          if [ "${{ inputs.browser }}" = "chrome" ] || [ "${{ inputs.browser }}" = "firefox" ] || [ "${{ inputs.browser }}" = "edge" ]; then
+            npm run docker:compose:${{ inputs.browser }}
+          else
+            npm run docker:compose:up
+          fi
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Cleanup containers (Docker)
+        if: ${{ inputs.use_docker && always() }}
+        working-directory: cypress-ts-demo
+        run: npm run docker:compose:down
+      
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress-ts-demo/cypress/screenshots
+          retention-days: 3
+          if-no-files-found: ignore
+      
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress-ts-demo/cypress/videos
+          retention-days: 3
+          if-no-files-found: ignore
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-test-results
+          path: cypress-ts-demo/cypress/reports/*.html
+          retention-days: 5
+          if-no-files-found: ignore
+      
+      #Publish step commented out, job logs and html artifact can be used to review test results
+      # (html publish is not supported natively by GitHub Actions, the json version would be inferior to the above)
+
+      #- name: Publish test results
+      #  uses: EnricoMi/publish-unit-test-result-action@v2
+      #  if: always()
+      #  with:
+      #    files: cypress-demo/cypress/reports/*.html
+      #    check_name: Cypress E2E Test Results

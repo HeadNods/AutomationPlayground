@@ -1,0 +1,36 @@
+services:
+  cypress:
+    image: cypress/included:latest
+    container_name: cypress-tests
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: cypress
+    command: ["run"]
+
+  cypress-chrome:
+    image: cypress/included:latest
+    container_name: cypress-chrome
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: cypress
+    command: ["run", "--browser", "chrome"]
+
+  cypress-firefox:
+    image: cypress/included:latest
+    container_name: cypress-firefox
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: cypress
+    command: ["run", "--browser", "firefox"]
+
+  cypress-edge:
+    image: cypress/included:latest
+    container_name: cypress-edge
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: cypress
+    command: ["run", "--browser", "edge"]

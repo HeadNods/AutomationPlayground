@@ -1,0 +1,32 @@
+{
+  "name": "cypress-ts-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "cypress run",
+    "test:headed": "cypress run --headed",
+    "test:headless": "cypress run --headless",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:edge": "cypress run --browser edge",
+    "docker:compose:up": "docker compose up cypress",
+    "docker:compose:chrome": "docker compose up cypress-chrome",
+    "docker:compose:firefox": "docker compose up cypress-firefox",
+    "docker:compose:edge": "docker compose up cypress-edge",
+    "docker:compose:down": "docker compose down",
+    "docker:interactive": "docker run -it --rm -v .:/app -w /app --entrypoint bash cypress/included:latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "cypress": "^15.7.0",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "typescript": "^5.9.3"
+  }
+}
