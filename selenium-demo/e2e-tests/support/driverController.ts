@@ -142,13 +142,13 @@ export class World extends CucumberWorld {
             // Set longer timeouts for Edge
             if (browser.toLowerCase() === "edge" || browser.toLowerCase() === "msedge") {
                 await this.driver.manage().setTimeouts({
-                    implicit: 5000,
+                    implicit: 0,        // No implicit wait to avoid masking issues and conflicts with our basePage handling if this.
                     pageLoad: 120000,  // 2 minutes for Edge
                     script: 60000
                 });
             } else {
                 await this.driver.manage().setTimeouts({
-                    implicit: 2000,
+                    implicit: 0,
                     pageLoad: 60000,
                     script: 30000
                 });
