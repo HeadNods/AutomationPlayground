@@ -56,6 +56,11 @@ function getBrowserOptions(browser: string): BrowserConfig {
         case "msedge":
             const edgeOptions = new edge.Options();
             chromiumArgs.forEach(arg => edgeOptions.addArguments(arg));
+            // Edge-specific: increase page load timeout
+            edgeOptions.addArguments("--disable-popup-blocking");
+            edgeOptions.addArguments("--disable-infobars");
+            // Add Edge-specific performance args
+            edgeOptions.setPageLoadStrategy('normal');
             return { browser: "MicrosoftEdge", options: edgeOptions };
         
         case "chrome":
@@ -134,6 +139,20 @@ export class World extends CucumberWorld {
 
             console.log("Building WebDriver...");
             this.driver = await builder.build();
+            // Set longer timeouts for Edge
+            if (browser.toLowerCase() === "edge" || browser.toLowerCase() === "msedge") {
+                await this.driver.manage().setTimeouts({
+                    implicit: 5000,
+                    pageLoad: 120000,  // 2 minutes for Edge
+                    script: 60000
+                });
+            } else {
+                await this.driver.manage().setTimeouts({
+                    implicit: 2000,
+                    pageLoad: 60000,
+                    script: 30000
+                });
+            }
             this.driverInitialized = true;
             console.log("Driver initialized successfully");
         } catch (error) {
