@@ -14,7 +14,7 @@ Feature: Dynamic Loading Page
     
     Scenario: Verify Example 1 elements during loading
         When I navigate to Example 1
-        And I click the "Start" button
+        And I click the "Start" button on the dynamic loading page
         Then the "Start" button is not displayed
         And the "Start" button is in the DOM
         And the loading indicator is displayed
@@ -24,7 +24,7 @@ Feature: Dynamic Loading Page
 
     Scenario: Verify Example 1 elements after loading is complete
         When I navigate to Example 1
-        And I click the "Start" button
+        And I click the "Start" button on the dynamic loading page
         And I wait for the loading to complete
         Then the "Start" button is not displayed
         And the "Start" button is in the DOM
@@ -44,7 +44,7 @@ Feature: Dynamic Loading Page
     
     Scenario: Verify Example 2 elements during loading
         When I navigate to Example 2
-        And I click the "Start" button
+        And I click the "Start" button on the dynamic loading page
         Then the "Start" button is not displayed
         And the "Start" button is in the DOM
         And the loading indicator is displayed
@@ -54,7 +54,7 @@ Feature: Dynamic Loading Page
 
     Scenario: Verify Example 2 elements after loading is complete
         When I navigate to Example 2
-        And I click the "Start" button
+        And I click the "Start" button on the dynamic loading page
         And I wait for the loading to complete
         Then the "Start" button is not displayed
         And the "Start" button is in the DOM

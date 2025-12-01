@@ -12,7 +12,7 @@ Feature: Geolocation
 
     @geoLocation @initialState
     Scenario: Verify geolocation functionality with simulated coordinates
-        When I click the "Where am I?" button
+        When I click the "Where am I?" button on the geolocation page
         Then I should see the demo text "Latitude"
         And I should see the demo text "Longitude" 
         And I should see the latitude "555"

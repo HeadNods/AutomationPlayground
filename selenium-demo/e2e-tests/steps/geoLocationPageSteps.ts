@@ -10,7 +10,7 @@ Given('I navigate to the geolocation page', async function (this: World) {
     await geoLocationPage.navigate();
 });
 
-When('I click the {string} button', async function (buttonText: string) {
+When('I click the {string} button on the geolocation page', async function (buttonText: string) {
     await geoLocationPage.clickGetLocationButton();
 });
 

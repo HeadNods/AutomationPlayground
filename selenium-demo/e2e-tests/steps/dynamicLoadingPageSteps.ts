@@ -27,7 +27,7 @@ When(
 );
 
 When(
-    /^I click the "Start" button$/,
+    /^I click the "Start" button on the dynamic loading page$/,
     async function (this: World) {
         await this.dynamicLoadingPage.clickStartButton();
     }
