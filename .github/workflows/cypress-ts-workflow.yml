@@ -1,4 +1,4 @@
-name: Cypress E2E Tests
+name: Cypress TS E2E Tests
 
 on:
   push:
@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-ts-screenshots
           path: cypress-ts-demo/cypress/screenshots
           retention-days: 3
           if-no-files-found: ignore
@@ -92,7 +92,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-videos
+          name: cypress-ts-videos
           path: cypress-ts-demo/cypress/videos
           retention-days: 3
           if-no-files-found: ignore
@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-test-results
+          name: cypress-ts-test-results
           path: cypress-ts-demo/cypress/reports/*.html
           retention-days: 5
           if-no-files-found: ignore
