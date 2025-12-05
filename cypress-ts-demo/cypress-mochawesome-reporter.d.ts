@@ -1,6 +1,5 @@
 declare module 'cypress-mochawesome-reporter/plugin' {
-  function register(on: Cypress.PluginEvents): void;
-  export default register;
+  export default function register(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions): void;
 }
 
 declare module 'cypress-mochawesome-reporter/register';
